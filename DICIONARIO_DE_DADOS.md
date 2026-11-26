@@ -190,7 +190,7 @@ Fonte: tabelas territoriais do DATASUS, base territorial de 06/2026 (`ref_regiao
 
 ## A.7 SIGO: `regioes_municipios.json` e `snapshot-2026-11-15/`
 
-Fonte: Sistema Integrado de Gestão Operacional (SIGO), SEJUSP-MS, painel público de estatísticas. Não há arquivo para baixar: o trabalho guardou 346 respostas JSON da API do painel (consulta de 15/11/2026) e a lista de municípios do painel. Os JSON não têm dicionário publicado: as descrições vêm da estrutura das respostas e dos valores. O nome de cada arquivo tem o formato `searchEstatisticas{Vitimas|Ocorrencias|CVLI}_t{tipo}_a{período}_{estado|munID}.json`. Tipos de crime (c.247): 1 Homicídio doloso; 2 Latrocínio; 3 Lesão corporal seguida de morte; 4 Tentativa de homicídio; 5 Feminicídio; 6 Morte por intervenção legal; 7 Morte de causa indeterminada; 8 Morte no trânsito; 10 Suicídio; 29 CVLI (no notebook, o rótulo do tipo 29 é "CVLI (vítimas)"; o arquivo `CVLI` do tipo 29 traz ocorrências).
+Fonte: Sistema Integrado de Gestão Operacional (SIGO), SEJUSP-MS, painel público de estatísticas. Não há arquivo para baixar: o trabalho guardou 346 respostas JSON da API do painel (consulta de 15/11/2026) e a lista de municípios do painel. Os JSON não têm dicionário publicado: as descrições vêm da estrutura das respostas e dos valores. O nome de cada arquivo tem o formato `searchEstatisticas{Vitimas|Ocorrencias|CVLI}_t{tipo}_a{período}_{estado|munID}.json`. Tipos de crime (c.251): 1 Homicídio doloso; 2 Latrocínio; 3 Lesão corporal seguida de morte; 4 Tentativa de homicídio; 5 Feminicídio; 6 Morte por intervenção legal; 7 Morte de causa indeterminada; 8 Morte no trânsito; 10 Suicídio; 29 CVLI (no notebook, o rótulo do tipo 29 é "CVLI (vítimas)"; o arquivo `CVLI` do tipo 29 traz ocorrências).
 
 ### `regioes_municipios.json`
 
@@ -239,11 +239,13 @@ Todas são **elaboradas neste trabalho**. A coluna "Célula" diz onde a variáve
 | `ANO_OBITO` | Ano do óbito | Ano de `DATA_OBITO` (já com o zero à esquerda corrigido) | 2016 a 2024 | c.161 | Elaborada neste trabalho |
 | `MES_OBITO` | Mês do óbito | Mês de `DATA_OBITO` | 1 a 12 | c.161 | Elaborada neste trabalho |
 | `VIA_PUBLICA` | Óbito em via pública | Verdadeiro quando `LOC_MORTE` é 4 | Verdadeiro ou falso (7.377 verdadeiros) | c.161 | Elaborada neste trabalho |
-| `GRUPO_VITIMA` | Grupo da vítima (tabela `vitimas`) | `CATEGORIA` trânsito ou agressão, com o rótulo em português | `trânsito`, `agressão` | c.199 | Elaborada neste trabalho |
-| `OCUPACAO_GRUPO` | Grande grupo da ocupação (tabela `vitimas`) | Primeiro dígito da `OCUP` quando `OCUP_ROTULO` é "ocupação CBO"; nos demais casos, o próprio `OCUP_ROTULO` | Grandes grupos 0 a 9 da CBO (7 e 8 têm o mesmo rótulo no notebook), Estudante, Dona de casa, Aposentado/Pensionista, Desempregado, Presidiário, sem informação | c.211 | Elaborada neste trabalho |
-| `CLASSE_ROTULO` | Classe de renda por extenso (tabela `vitimas`) | Troca o código de `CLASSE_RENDA` pelo rótulo | baixa, média, alta, ocupação sem dado na RAIS, ocupação não encontrada na RAIS, sem informação | c.215 | Elaborada neste trabalho |
+| `GRUPO_VITIMA` | Grupo da vítima (tabela `vitimas`) | `CATEGORIA` trânsito ou agressão, com o rótulo em português | `trânsito`, `agressão` | c.203 | Elaborada neste trabalho |
+| `OCUPACAO_GRUPO` | Grande grupo da ocupação (tabela `vitimas`) | Primeiro dígito da `OCUP` quando `OCUP_ROTULO` é "ocupação CBO"; nos demais casos, o próprio `OCUP_ROTULO` | Grandes grupos 0 a 9 da CBO (7 e 8 têm o mesmo rótulo no notebook), Estudante, Dona de casa, Aposentado/Pensionista, Desempregado, Presidiário, sem informação | c.215 | Elaborada neste trabalho |
+| `CLASSE_ROTULO` | Classe de renda por extenso (tabela `vitimas`) | Troca o código de `CLASSE_RENDA` pelo rótulo | baixa, média, alta, ocupação sem dado na RAIS, ocupação não encontrada na RAIS, sem informação | c.219 | Elaborada neste trabalho |
 | `MEIO_AGRESSAO` | Meio da agressão (dicionário, não vira coluna) | Liga `CID_3` das agressões ao meio | X93, X94 e X95 arma de fogo; X99 cortante; Y00 contundente; X91 enforcamento; Y04 força corporal; Y09 não especificado; demais = demais meios | c.191 | Elaborada neste trabalho |
 | `VITIMA_TRANSITO` | Quem morre no trânsito (dicionário, não vira coluna) | Liga os 2 primeiros caracteres de `CID_3` das mortes de trânsito à vítima | V0 pedestre; V1 ciclista; V2 motociclista; V3 triciclo; V4 automóvel; V5 caminhonete; V6 pesado; V7 ônibus; V8 outros | c.195 | Elaborada neste trabalho |
+| `MORADIA` (tabela `ocorridos_ms`) | Situação de moradia do óbito ocorrido em MS (trânsito e agressão) | Compara `MUN_MORADIA` com `MUN_MORTE`: iguais = mora no município; diferentes e `MORADIA_EM_MS` verdadeiro = outro município de MS; senão fora de MS | `mora no município`, `outro município de MS`, `fora de MS` | c.199 | Elaborada neste trabalho |
+| `LOCAL` (tabela `ocorridos_ms`) | Local do óbito agrupado | `LOC_MORTE` 1 e 2 = estabelecimento de saúde; 4 via pública; 3 domicílio; 5 outros; 6 aldeia indígena; 9 e vazio = ignorado | `estabelecimento de saúde`, `via pública`, `domicílio`, `outros`, `aldeia indígena`, `ignorado` | c.199 | Elaborada neste trabalho |
 
 ### A.8.2 RAIS (tabelas `tabela_rais` e do log)
 
@@ -271,17 +273,17 @@ Todas são **elaboradas neste trabalho**. A coluna "Célula" diz onde a variáve
 | `REGIAO_SAUDE` | Nome da região de saúde do município | `DS_NOME` ligado pelo código da região | Nome (ex.: `Sul Fronteira`) | c.147 | Elaborada neste trabalho |
 | `DATA_ACIDENTE` | Data do acidente da PRF | Converte `data_inversa` (`dd/mm/aa` em 2016 e `aaaa-mm-dd` depois) | Data | c.129 | Elaborada neste trabalho |
 | `MORTOS_PRF` | Mortos no acidente da PRF | `mortos` convertido para inteiro | Inteiro de 0 a 8 | c.133 | Elaborada neste trabalho |
-| `ACIDENTES_PRF` | Acidentes da PRF por município e ano | Conta as linhas (`id`) por `COD_MUN` e `ANO` | Inteiro | c.227 | Elaborada neste trabalho |
+| `ACIDENTES_PRF` | Acidentes da PRF por município e ano | Conta as linhas (`id`) por `COD_MUN` e `ANO` | Inteiro | c.231 | Elaborada neste trabalho |
 | `EVENTO_NORM` | Evento do VDE normalizado | `evento` em maiúsculas e sem acento | Texto | c.137 | Elaborada neste trabalho |
 | `ABRANGENCIA_NORM` | Abrangência do VDE normalizada | `abrangencia` em maiúsculas e sem acento | Texto | c.137 | Elaborada neste trabalho |
 | `SERIE_VDE` | Série do VDE usada na análise | Casa o início do nome do evento com a abrangência | `transito_estadual` (8.640 linhas), `transito_prf` (8.640), `intervencao_estadual` (108); vazio = linha fora da análise | c.137 | Elaborada neste trabalho |
 | `TOTAL_VITIMA` | Vítimas do VDE na linha | `total_vitima` convertido para inteiro | Inteiro, 0 ou mais | c.143 | Elaborada neste trabalho |
 | `DATA_REFERENCIA` | Mês de referência do VDE | `data_referencia` convertida para data | Data (primeiro dia do mês) | c.143 | Elaborada neste trabalho |
-| `SIGO_VITIMAS` | Vítimas de trânsito do SIGO, por município e ano | `items.anual` do JSON de vítimas, tipo 8, de cada município | Inteiro; 711 linhas | c.223 | Elaborada neste trabalho |
-| `SIGO_OCORRENCIAS` | Ocorrências de trânsito do SIGO, por município e ano | `items.anual` do JSON de ocorrências, tipo 8 | Inteiro; 711 linhas | c.223 | Elaborada neste trabalho |
-| `SIGO_CVLI_OCORRENCIAS` | Ocorrências de CVLI do SIGO, por município e ano (conta ocorrências, não vítimas) | `items.anual` do JSON `searchEstatisticasCVLI`, tipo 29, de cada município | Inteiro; 711 linhas | c.223 | Elaborada neste trabalho |
-| `sigo_cvli_vitimas_estado` | Vítimas de CVLI do SIGO, por ano, no estado (só existe para o estado, não por município) | `items.anual` do JSON `searchEstatisticasVitimas`, tipo 29, do estado | Inteiro; 9 valores (2016 a 2024) | c.223 | Elaborada neste trabalho |
-| `SIGO_INTERVENCAO` | Mortes por intervenção legal no SIGO, por município e ano | `items.anual` do JSON de vítimas, tipo 6 | Inteiro; 711 linhas | c.223 | Elaborada neste trabalho |
+| `SIGO_VITIMAS` | Vítimas de trânsito do SIGO, por município e ano | `items.anual` do JSON de vítimas, tipo 8, de cada município | Inteiro; 711 linhas | c.227 | Elaborada neste trabalho |
+| `SIGO_OCORRENCIAS` | Ocorrências de trânsito do SIGO, por município e ano | `items.anual` do JSON de ocorrências, tipo 8 | Inteiro; 711 linhas | c.227 | Elaborada neste trabalho |
+| `SIGO_CVLI_OCORRENCIAS` | Ocorrências de CVLI do SIGO, por município e ano (conta ocorrências, não vítimas) | `items.anual` do JSON `searchEstatisticasCVLI`, tipo 29, de cada município | Inteiro; 711 linhas | c.227 | Elaborada neste trabalho |
+| `sigo_cvli_vitimas_estado` | Vítimas de CVLI do SIGO, por ano, no estado (só existe para o estado, não por município) | `items.anual` do JSON `searchEstatisticasVitimas`, tipo 29, do estado | Inteiro; 9 valores (2016 a 2024) | c.227 | Elaborada neste trabalho |
+| `SIGO_INTERVENCAO` | Mortes por intervenção legal no SIGO, por município e ano | `items.anual` do JSON de vítimas, tipo 6 | Inteiro; 711 linhas | c.227 | Elaborada neste trabalho |
 
 ### A.8.4 Comparações, taxas, agrupamento e números pequenos
 
@@ -289,30 +291,33 @@ Todas são **elaboradas neste trabalho**. A coluna "Célula" diz onde a variáve
 |---|---|---|---|---|---|
 | `GRADE_OCORRENCIA` | Óbitos por município e ano | Conta os óbitos da categoria, com ocorrência em MS, por município de ocorrência e ano; um quadro de 79 × 9 por categoria. Célula sem óbito vale 0 | Inteiro, 0 ou mais | c.165 | Elaborada neste trabalho |
 | `GRADE_RESIDENCIA` | Óbitos por município de residência e ano | Igual à anterior, pelo município de residência | Inteiro, 0 ou mais | c.165 | Elaborada neste trabalho |
-| `serie_transito` | Série anual do trânsito por fonte | Uma coluna por fonte: SIM (ocorrência e residência), SIGO vítimas, VDE vítimas, SIGO ocorrências e mortos da PRF; mais "B comparável?" | Inteiro por ano; "B comparável?" = `NÃO COMPARÁVEL (2016–2017)` ou `sim` | c.231 | Elaborada neste trabalho |
-| `razoes` | Razões das fontes sobre o SIM de trânsito | Cada fonte dividida pelo SIM de trânsito por ocorrência, ano a ano | Decimal | c.231 | Elaborada neste trabalho |
-| `agressao_x_cvli` | Agressão do SIM × CVLI do SIGO | Colunas `SIM agressão (ocorrência)` e `SIM agressão (residência)`; `SIGO CVLI ocorrências` (soma dos 79 municípios); `SIGO CVLI vítimas (estado)`; e as razões `CVLI ocorrências / SIM` e `CVLI vítimas / SIM` (ambas sobre o SIM por ocorrência) | Inteiro por ano; razões decimais | c.241 | Elaborada neste trabalho |
-| `intervencao_fontes` | Intervenção legal por fonte | Colunas SIM Y35–Y36, SIGO tipo 6, VDE, `VDE usado` (o VDE sem o ano de 2020), `SIM / SIGO` e `SIM / VDE` | Inteiro por ano; razões decimais | c.241 | Elaborada neste trabalho |
-| `taxa_estadual` | Taxa estadual por 100 mil habitantes | Óbitos do ano na categoria ÷ população de MS no ano × 100.000 | Decimal, por categoria e ano | c.261 | Elaborada neste trabalho |
-| `pessoas_ano` | Pessoas-ano do município, 2016–2024 | Soma da população do município nos 9 anos | Inteiro, por município | c.261 | Elaborada neste trabalho |
-| `taxa_municipal` | Taxa municipal do período por 100 mil habitantes | Óbitos de 2016 a 2024 ÷ `pessoas_ano` × 100.000 | Decimal, por município e categoria | c.261 | Elaborada neste trabalho |
-| `POP_2022` | População do município em 2022 (Censo) | `POPULACAO` de 2022 | Inteiro | c.271 | Elaborada neste trabalho |
-| `PESSOAS_ANO` | Pessoas-ano do município (tabela `V2`) | O mesmo valor de `pessoas_ano` | Inteiro | c.271 | Elaborada neste trabalho |
-| `OBITOS_TRANSITO` e `OBITOS_AGRESSAO` | Óbitos do período, por município | Soma de `GRADE_OCORRENCIA` nos 9 anos (trânsito e agressão) | Inteiro | c.271 | Elaborada neste trabalho |
-| `TAXA_BRUTA_TRANSITO` e `TAXA_BRUTA_AGRESSAO` | Taxa bruta do período, por 100 mil | Óbitos ÷ pessoas-ano × 100.000 (`r_i = d_i / n_i`) | Decimal | c.271 | Elaborada neste trabalho |
-| `TAXA_SUAV_TRANSITO` e `TAXA_SUAV_AGRESSAO` | Taxa suavizada por Bayes empírico, por 100 mil | `m + w_i (r_i − m)`, em que `m` é a taxa do estado e `w_i` o peso do município; a taxa encolhe para a do estado quando a população é pequena | Decimal | c.271 | Elaborada neste trabalho |
-| `PESO_TRANSITO` e `PESO_AGRESSAO` | Peso `w_i` do Bayes empírico | `s² / (s² + m / n_i)`, com `s²` (variância entre municípios) valendo 0 se der negativo | Decimal de 0 a 1 | c.271 | Elaborada neste trabalho |
-| `DIF_TRANSITO` e `DIF_AGRESSAO` | Quanto a suavização mudou a taxa | Taxa suavizada − taxa bruta | Decimal, positivo ou negativo | c.271 | Elaborada neste trabalho |
-| `Z` | Taxas suavizadas padronizadas (escore z) | `(X − média) / desvio padrão`, para as duas taxas suavizadas | Decimal, 79 linhas × 2 colunas | c.277 | Elaborada neste trabalho |
-| `GRUPO` | Grupo do município no agrupamento principal (k = 3) | k-means sobre `Z`, com rótulos dados por regra | `H1`, `H2`, `H3` | c.283 | Elaborada neste trabalho |
-| `ROTULO_GRUPO` | Nome do grupo | H1 = agressão alta; H2 = trânsito alto; H3 = baixo nas duas | `agressão alta`, `trânsito alto`, `baixo nas duas` | c.283 | Elaborada neste trabalho |
-| `SILHUETA` | Silhueta do município no agrupamento | Silhueta de cada município no k-means com k = 3 | Decimal de −1 a 1 | c.283 | Elaborada neste trabalho |
-| `GRUPO_K2` | Grupo do município no agrupamento de conferência (k = 2) | k-means com k = 2; G1 é o grupo de maiores taxas padronizadas | `G1`, `G2` | c.289 | Elaborada neste trabalho |
-| `PORTE` | Porte do município | Faixa de `POP_2022` | `até 20 mil`, `20–50 mil`, `50–100 mil`, `mais de 100 mil` | c.293 | Elaborada neste trabalho |
-| `REGIAO_SAUDE` (na tabela `V2`) | Região de saúde do município | Copia a região de saúde de cada município | Nome da região | c.293 | Elaborada neste trabalho |
-| `BLOCOS` | Blocos de 3 anos | Agrupa os anos em três blocos | `2016–18`, `2019–21`, `2022–24` | c.297 | Elaborada neste trabalho |
-| `codigo_regiao` | Região de saúde de cada município, para somar óbitos | `COD_REGIAO_SAUDE` dos 79 municípios | Código de 5 dígitos | c.297 | Elaborada neste trabalho |
-| `n_0`, `n_1a4`, `n_5a9`, `n_ge10` | Células com 0, 1 a 4, 5 a 9 e 10 ou mais óbitos | Conta as células de cada tabela (município × ano, município × bloco e região de saúde); as colunas `pct_...` trazem as porcentagens | Inteiro | c.297 | Elaborada neste trabalho |
+| `tabelas_local` | Local do óbito por situação de moradia (5.9), trânsito e agressão | Uma linha por situação de moradia (3 linhas por categoria): `total`, contagem em cada local e `% ` de cada local na linha. Grava `sim_morte_fora_do_municipio_local.csv` (as duas categorias empilhadas, coluna `categoria`) | Inteiro e decimal; trânsito soma 5.868 e agressão 4.767 | c.199 | Elaborada neste trabalho |
+| `resumo_local` | Moradores e não moradores por local do óbito (5.9) | Duas linhas por categoria (`moradores` e `não moradores`, que soma outro município de MS e fora de MS), com `total` e a contagem em cada local; base das conferências da 5.9 | Inteiro; trânsito 3.521 moradores e 2.347 não moradores | c.199 | Elaborada neste trabalho |
+| `por_municipio` | Trânsito por município de ocorrência: moradores, não moradores e local dos não moradores (5.9) | Por `MUN_MORTE`: `ocorridos`, `moradores`, `não moradores`, não moradores em estabelecimento de saúde, em via pública e nos demais locais, e `%` dos não moradores em estabelecimento de saúde. Grava `sim_morte_fora_do_municipio_por_municipio.csv` com as tabelas `tres_municipios` (Dourados, Campo Grande, Três Lagoas) e `dez_mais_nao_moradores` (coluna `tabela`) | Inteiro e decimal; 79 municípios na tabela completa | c.199 | Elaborada neste trabalho |
+| `serie_transito` | Série anual do trânsito por fonte | Uma coluna por fonte: SIM (ocorrência e residência), SIGO vítimas, VDE vítimas, SIGO ocorrências e mortos da PRF; mais "B comparável?" | Inteiro por ano; "B comparável?" = `NÃO COMPARÁVEL (2016–2017)` ou `sim` | c.235 | Elaborada neste trabalho |
+| `razoes` | Razões das fontes sobre o SIM de trânsito | Cada fonte dividida pelo SIM de trânsito por ocorrência, ano a ano | Decimal | c.235 | Elaborada neste trabalho |
+| `agressao_x_cvli` | Agressão do SIM × CVLI do SIGO | Colunas `SIM agressão (ocorrência)` e `SIM agressão (residência)`; `SIGO CVLI ocorrências` (soma dos 79 municípios); `SIGO CVLI vítimas (estado)`; e as razões `CVLI ocorrências / SIM` e `CVLI vítimas / SIM` (ambas sobre o SIM por ocorrência) | Inteiro por ano; razões decimais | c.245 | Elaborada neste trabalho |
+| `intervencao_fontes` | Intervenção legal por fonte | Colunas SIM Y35–Y36, SIGO tipo 6, VDE, `VDE usado` (o VDE sem o ano de 2020), `SIM / SIGO` e `SIM / VDE` | Inteiro por ano; razões decimais | c.245 | Elaborada neste trabalho |
+| `taxa_estadual` | Taxa estadual por 100 mil habitantes | Óbitos do ano na categoria ÷ população de MS no ano × 100.000 | Decimal, por categoria e ano | c.265 | Elaborada neste trabalho |
+| `pessoas_ano` | Pessoas-ano do município, 2016–2024 | Soma da população do município nos 9 anos | Inteiro, por município | c.265 | Elaborada neste trabalho |
+| `taxa_municipal` | Taxa municipal do período por 100 mil habitantes | Óbitos de 2016 a 2024 ÷ `pessoas_ano` × 100.000 | Decimal, por município e categoria | c.265 | Elaborada neste trabalho |
+| `POP_2022` | População do município em 2022 (Censo) | `POPULACAO` de 2022 | Inteiro | c.275 | Elaborada neste trabalho |
+| `PESSOAS_ANO` | Pessoas-ano do município (tabela `V2`) | O mesmo valor de `pessoas_ano` | Inteiro | c.275 | Elaborada neste trabalho |
+| `OBITOS_TRANSITO` e `OBITOS_AGRESSAO` | Óbitos do período, por município | Soma de `GRADE_OCORRENCIA` nos 9 anos (trânsito e agressão) | Inteiro | c.275 | Elaborada neste trabalho |
+| `TAXA_BRUTA_TRANSITO` e `TAXA_BRUTA_AGRESSAO` | Taxa bruta do período, por 100 mil | Óbitos ÷ pessoas-ano × 100.000 (`r_i = d_i / n_i`) | Decimal | c.275 | Elaborada neste trabalho |
+| `TAXA_SUAV_TRANSITO` e `TAXA_SUAV_AGRESSAO` | Taxa suavizada por Bayes empírico, por 100 mil | `m + w_i (r_i − m)`, em que `m` é a taxa do estado e `w_i` o peso do município; a taxa encolhe para a do estado quando a população é pequena | Decimal | c.275 | Elaborada neste trabalho |
+| `PESO_TRANSITO` e `PESO_AGRESSAO` | Peso `w_i` do Bayes empírico | `s² / (s² + m / n_i)`, com `s²` (variância entre municípios) valendo 0 se der negativo | Decimal de 0 a 1 | c.275 | Elaborada neste trabalho |
+| `DIF_TRANSITO` e `DIF_AGRESSAO` | Quanto a suavização mudou a taxa | Taxa suavizada − taxa bruta | Decimal, positivo ou negativo | c.275 | Elaborada neste trabalho |
+| `Z` | Taxas suavizadas padronizadas (escore z) | `(X − média) / desvio padrão`, para as duas taxas suavizadas | Decimal, 79 linhas × 2 colunas | c.281 | Elaborada neste trabalho |
+| `GRUPO` | Grupo do município no agrupamento principal (k = 3) | k-means sobre `Z`, com rótulos dados por regra | `H1`, `H2`, `H3` | c.287 | Elaborada neste trabalho |
+| `ROTULO_GRUPO` | Nome do grupo | H1 = agressão alta; H2 = trânsito alto; H3 = baixo nas duas | `agressão alta`, `trânsito alto`, `baixo nas duas` | c.287 | Elaborada neste trabalho |
+| `SILHUETA` | Silhueta do município no agrupamento | Silhueta de cada município no k-means com k = 3 | Decimal de −1 a 1 | c.287 | Elaborada neste trabalho |
+| `GRUPO_K2` | Grupo do município no agrupamento de conferência (k = 2) | k-means com k = 2; G1 é o grupo de maiores taxas padronizadas | `G1`, `G2` | c.293 | Elaborada neste trabalho |
+| `PORTE` | Porte do município | Faixa de `POP_2022` | `até 20 mil`, `20–50 mil`, `50–100 mil`, `mais de 100 mil` | c.297 | Elaborada neste trabalho |
+| `REGIAO_SAUDE` (na tabela `V2`) | Região de saúde do município | Copia a região de saúde de cada município | Nome da região | c.297 | Elaborada neste trabalho |
+| `BLOCOS` | Blocos de 3 anos | Agrupa os anos em três blocos | `2016–18`, `2019–21`, `2022–24` | c.301 | Elaborada neste trabalho |
+| `codigo_regiao` | Região de saúde de cada município, para somar óbitos | `COD_REGIAO_SAUDE` dos 79 municípios | Código de 5 dígitos | c.301 | Elaborada neste trabalho |
+| `n_0`, `n_1a4`, `n_5a9`, `n_ge10` | Células com 0, 1 a 4, 5 a 9 e 10 ou mais óbitos | Conta as células de cada tabela (município × ano, município × bloco e região de saúde); as colunas `pct_...` trazem as porcentagens | Inteiro | c.301 | Elaborada neste trabalho |
 
 ---
 
